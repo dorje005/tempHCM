@@ -1,0 +1,37 @@
+.banner {
+    border-bottom: 3px solid black;
+    padding-left: 15px;
+    padding-top: 5px;
+}
+
+.banner img {
+    float: left;
+}
+
+.banner h2 {
+    position: relative;
+    left: 50px;
+    bottom: 15px;
+    font-family: 'Roboto', helvetica, arial, sans-serif;
+}
+#t {
+    width: 50%;
+    margin-left: 40px;
+}
+
+.thead {
+    font-weight: bold;
+    font-size: 140%;
+
+}
+.tbody #col_1 {
+    color: gray;
+    font-weight: bold;
+}
+
+.ft img {
+    position: fixed;
+    bottom: 0;
+    padding-top: 25px;
+    left:84%;
+}
