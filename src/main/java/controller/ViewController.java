@@ -1,5 +1,7 @@
 package controller;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,11 +52,6 @@ public class ViewController {
         endpoints.put("https://dev-web.retailcs.awsdev.infor.com", "Dev Website");
         endpoints.put("http://www.nfl.com/blahhhh", "Faulty URL");
 
-        String example = "dasfs.fdasfas.PrintThis";
-        String[] tokens = example.split(".");
-        for (String item : tokens) {
-            System.out.println(item);
-        }
     }
 
     @RequestMapping("/homepage")
@@ -149,19 +146,30 @@ public class ViewController {
                 }
             }
         }
-//        System.out.println("Data from web Redirection: " + jsonData);
-//        parseJSON(jsonData);
+
+        // check if Data retained is actually JSON
+        if (jsonData.indexOf("{") == 0) {
+            getSubService(jsonData); }
         return statusCode;
     }
 
-//    public static String parseJSON(String jsonData) {
-//        JSONObject jsonObject = new JSONObject(jsonData);
-//        JSONArray jsonArray = jsonObject.getJSONArray("healthChecks");
-//        JSONObject desiredObject = jsonArray.getJSONObject(0);
-//        subService = desiredObject.get("serviceName").toString();
-//        System.out.println("SubService: " + subService);
-//        return subService;
-//    }
+    public static String getSubService(String jsonData) {
+        final String HC = "healthChecks";
+        final String SUB_SERVICE = "serviceName";
+        JSONObject jsonObject = new JSONObject(jsonData);
+        JSONArray jsonArray = jsonObject.getJSONArray(HC);
+
+        // sub service is always the first element of healthChecks
+        JSONObject desiredObject = jsonArray.getJSONObject(0);
+        subService = desiredObject.get(SUB_SERVICE).toString();
+
+        // parse the String if needed
+        if (subService.contains(".")) {
+            String[] tokens = subService.split("\\.");
+            subService = tokens[tokens.length - 1];
+        }
+        return subService;
+    }
 
     public static String getTodaysDate() {
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ssa");

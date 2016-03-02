@@ -36,6 +36,11 @@
         <div th:if="${service.getResponseCode() != 200}">
             <td>Performance Issues</td></div>
         <td th:text="${dateTime}"></td>
+        <div th:if="${service.getSubService() != null}">
+            <tr>
+                <td class="nested" th:text="${service.getSubService()}"></td>
+            </tr>
+        </div>
     </tr>
 </table>
 <div class="ft">
