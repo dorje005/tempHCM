@@ -1,4 +1,4 @@
-package controller;
+package com.infor.retail.healthcheck.model;
 
 /**
  * Created by odorjee on 2/29/2016.

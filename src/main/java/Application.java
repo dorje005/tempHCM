@@ -7,7 +7,6 @@ import org.springframework.context.annotation.ComponentScan;
  */
 
 @SpringBootApplication
-@ComponentScan("controller") //  MUST USE SINCE CONTROLLER IS IN DIFFERENT PACKAGE.
 public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class);

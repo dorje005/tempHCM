@@ -1,5 +1,6 @@
-package controller;
+package com.infor.retail.healthcheck.controller;
 
+import com.infor.retail.healthcheck.model.Service;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -23,16 +24,21 @@ import java.util.*;
  */
 
 @Controller
-public class ViewController {
+public class HealthMonitorController {
 
     public Map<String, String> endpoints;
     public static String subService;
 
-    public ViewController() {
+    public HealthMonitorController() {
 
         // create Linked Hash Map containing URL endpoints for various service health checks
         // along with the corresponding names of each service tested
         endpoints = new LinkedHashMap<>();
+
+        // endpoints=test.auth,test.hierarchy
+
+        // test.auth.url
+        // test.auth.name
         endpoints.put("https://test-api-authorization.retailcs.awsdev.infor.com/health", "Test API Authorization");
         endpoints.put("https://test-api-account.retailcs.awsdev.infor.com/health","Test API Account");
         endpoints.put("https://test-api-attribute.retailcs.awsdev.infor.com/health","Test API Attribute");
