@@ -1,20 +1,11 @@
 package com.infor.retail.healthcheck.controller;
 
 import com.infor.retail.healthcheck.model.Service;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.infor.retail.healthcheck.service.HealthMonitorService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -22,19 +13,25 @@ import java.util.*;
 /**
  * Created by odorjee on 2/18/2016.
  */
-
 @Controller
+//@Configuration
+//@PropertySource("C:/HCM/health-monitor-dashboard/src/main/resources/endpoint.properties")
+
 public class HealthMonitorController {
 
-    public Map<String, String> endpoints;
+//    @Value("${test.auth.name}")
+//    public static String ends;
+    public Map<String, String> endpoints = new LinkedHashMap<>();
     public static String subService;
+    public HealthMonitorService hms = new HealthMonitorService(subService);
+
 
     public HealthMonitorController() {
-
+//        System.out.println(ends);
         // create Linked Hash Map containing URL endpoints for various service health checks
         // along with the corresponding names of each service tested
-        endpoints = new LinkedHashMap<>();
 
+//        System.out.println(props.toString());
         // endpoints=test.auth,test.hierarchy
 
         // test.auth.url
@@ -63,10 +60,11 @@ public class HealthMonitorController {
     @RequestMapping("/homepage")
     public String homepage(Model model) {
         ArrayList<Service> healthChecks = new ArrayList<>();
+
         for (String url : endpoints.keySet()) {
-            healthChecks.add(new Service(endpoints.get(url), getStatusCode(url), subService));
+            healthChecks.add(new Service(endpoints.get(url), hms.getStatusCode(url), subService));
         }
-        String date = getTodaysDate();
+        String date = hms.getTodaysDate();
         model.addAttribute("services", healthChecks);
         model.addAttribute("dateTime", date);
         return "homepage";
@@ -88,98 +86,5 @@ public class HealthMonitorController {
         model.addAttribute("services", services);
         model.addAttribute("dateTime", dateFormat.format(date));
         return "offline";
-    }
-
-    public static int getStatusCode(String testUrl) {
-
-        int statusCode = 0;
-        subService = null;
-        HttpURLConnection urlConnection = null;
-        BufferedReader reader = null;
-        String jsonData = null;
-
-        try {
-            URI uri = URI.create(testUrl);
-            URL url = new URL(uri.toString());
-
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod("GET");
-            urlConnection.connect();
-
-            statusCode = urlConnection.getResponseCode();
-            if (statusCode != 200) {
-                return statusCode; //
-            }
-
-            // Retrieve entire JSON Data from redirection if URL is clean
-            // JSON data may be of use in the future
-            InputStream inputStream = urlConnection.getInputStream();
-
-            StringBuffer buffer = new StringBuffer();
-            if (inputStream == null) {
-                // Nothing to do.
-                return statusCode;
-            }
-            reader = new BufferedReader(new InputStreamReader(inputStream));
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-                buffer.append(line + "\n");
-            }
-
-            if (buffer.length() == 0) {
-                // Don't parse for empty streams
-                return statusCode;
-            }
-            // store JSON data into string
-            jsonData = buffer.toString();
-
-        } catch (MalformedURLException e) {
-            System.out.println("Created URL is incorrect!");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        finally {
-            if (urlConnection != null) {
-                urlConnection.disconnect();
-            }
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (final IOException e) {
-                    System.out.println("Error Closing Reader");
-                }
-            }
-        }
-
-        // check if Data retained is actually JSON
-        if (jsonData.indexOf("{") == 0) {
-            getSubService(jsonData); }
-        return statusCode;
-    }
-
-    public static String getSubService(String jsonData) {
-        final String HC = "healthChecks";
-        final String SUB_SERVICE = "serviceName";
-        JSONObject jsonObject = new JSONObject(jsonData);
-        JSONArray jsonArray = jsonObject.getJSONArray(HC);
-
-        // sub service is always the first element of healthChecks
-        JSONObject desiredObject = jsonArray.getJSONObject(0);
-        subService = desiredObject.get(SUB_SERVICE).toString();
-
-        // parse the String if needed
-        if (subService.contains(".")) {
-            String[] tokens = subService.split("\\.");
-            subService = tokens[tokens.length - 1];
-        }
-        return subService;
-    }
-
-    public static String getTodaysDate() {
-        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ssa");
-        Date date = new Date();
-        return dateFormat.format(date);
     }
 }

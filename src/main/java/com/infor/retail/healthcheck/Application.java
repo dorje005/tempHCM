@@ -1,6 +1,7 @@
+package com.infor.retail.healthcheck;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
 
 /**
  * Created by odorjee on 2/18/2016.
