@@ -37,8 +37,8 @@
             <td>Performance Issues</td></div>
         <td th:text="${dateTime}"></td>
         <div th:if="${service.getSubService() != null}">
-            <tr>
-                <td class="nested" th:text="${service.getSubService()}"></td>
+            <tr class="nested">
+                <td th:text="${service.getSubService()}" colspan="4"></td>
             </tr>
         </div>
     </tr>

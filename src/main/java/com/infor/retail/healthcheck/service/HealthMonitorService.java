@@ -14,7 +14,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,7 +27,7 @@ public class HealthMonitorService {
         this.subService = null;
     }
 
-    public String getSubService(){
+    public String getSubService() {
         return this.subService;
     }
 
@@ -84,9 +83,7 @@ public class HealthMonitorService {
             System.out.println("Created URL is incorrect!");
         } catch (IOException e) {
             e.printStackTrace();
-        }
-
-        finally {
+        } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
             }
@@ -101,7 +98,8 @@ public class HealthMonitorService {
 
         // check if Data retained is actually JSON
         if (jsonData.indexOf("{") == 0) {
-            parseJSON(jsonData); }
+            parseJSON(jsonData);
+        }
         return statusCode;
     }
 
@@ -123,7 +121,7 @@ public class HealthMonitorService {
     }
 
     public String getTodaysDate() {
-        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ssa");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy h:mm:ss a");
         Date date = new Date();
         return dateFormat.format(date);
     }

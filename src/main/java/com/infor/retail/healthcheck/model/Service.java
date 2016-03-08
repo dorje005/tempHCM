@@ -24,9 +24,11 @@ public class Service {
     public int getResponseCode() {
         return this.responseCode;
     }
+
     public String getServiceName() {
         return this.serviceName;
     }
+
     public String getSubService() {
         return this.subService;
     }
@@ -34,9 +36,11 @@ public class Service {
     public void setResponseCode(int code) {
         this.responseCode = code;
     }
+
     public void setServiceName(String name) {
         this.serviceName = name;
     }
+
     public void setSubService(String name2) {
         this.serviceName = name2;
     }
