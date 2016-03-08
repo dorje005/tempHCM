@@ -1,7 +1,10 @@
 package com.infor.retail.healthcheck.service;
 
+import com.infor.retail.healthcheck.model.Service;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,18 +16,30 @@ import java.net.URI;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
+@Component
 public class HealthMonitorService {
-    public static String subService;
 
-    public HealthMonitorService(String subservice) {
-        this.subService = subservice;
+    public String subService;
+
+    public HealthMonitorService() {
+        this.subService = null;
     }
-    public static int getStatusCode(String testUrl) {
+
+    public String getSubService(){
+        return this.subService;
+    }
+
+    public void setSubService(String newSubService) {
+        this.subService = newSubService;
+    }
+
+    public int getStatusCode(String testUrl) {
 
         int statusCode = 0;
-        subService = null;
+        this.setSubService(null);
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
         String jsonData = null;
@@ -86,11 +101,11 @@ public class HealthMonitorService {
 
         // check if Data retained is actually JSON
         if (jsonData.indexOf("{") == 0) {
-            getSubService(jsonData); }
+            parseJSON(jsonData); }
         return statusCode;
     }
 
-    public static String getSubService(String jsonData) {
+    public void parseJSON(String jsonData) {
         final String HC = "healthChecks";
         final String SUB_SERVICE = "serviceName";
         JSONObject jsonObject = new JSONObject(jsonData);
@@ -98,19 +113,31 @@ public class HealthMonitorService {
 
         // sub service is always the first element of healthChecks
         JSONObject desiredObject = jsonArray.getJSONObject(0);
-        subService = desiredObject.get(SUB_SERVICE).toString();
+        this.setSubService(desiredObject.get(SUB_SERVICE).toString());
 
         // parse the String if needed
-        if (subService.contains(".")) {
-            String[] tokens = subService.split("\\.");
-            subService = tokens[tokens.length - 1];
+        if (this.getSubService().contains(".")) {
+            String[] tokens = this.getSubService().split("\\.");
+            this.setSubService(tokens[tokens.length - 1]);
         }
-        return subService;
     }
 
-    public static String getTodaysDate() {
+    public String getTodaysDate() {
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ssa");
         Date date = new Date();
         return dateFormat.format(date);
     }
+
+    // get ArrayList containing services from AppConfig
+    @Autowired
+    ArrayList<Service> health_services;
+
+    public ArrayList<Service> getHealth_services() {
+        return health_services;
+    }
+
+    public void setHealth_services(ArrayList<Service> health_services) {
+        this.health_services = health_services;
+    }
+
 }

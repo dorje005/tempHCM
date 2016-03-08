@@ -9,6 +9,12 @@ public class Service {
     private String serviceName;
     private String subService;
 
+    public Service(String name, int code) {
+        this.serviceName = name;
+        this.responseCode = code;
+        this.subService = null;
+    }
+
     public Service(String name, int code, String name2) {
         this.serviceName = name;
         this.responseCode = code;
