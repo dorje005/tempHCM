@@ -32,9 +32,10 @@ public class AccessS3 {
 //            ObjectListing listing = s3Client.listObjects(bucketName);
             ObjectListing listing = s3Client.listObjects(new ListObjectsRequest().withBucketName(bucketName)
                     .withPrefix(folder));
-
+            System.out.println("Here");
             for (S3ObjectSummary object : listing.getObjectSummaries()){
                 System.out.println("Object: " + object.getKey());
+                System.out.println();     
             }
 
 //            System.out.println("Content-Type: "  +
