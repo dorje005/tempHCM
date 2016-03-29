@@ -2,10 +2,9 @@ package com.infor.retail.healthcheck.service.AmazonS3Service;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.ListObjectsRequest;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 
@@ -13,37 +12,29 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.List;
 
 /**
  * Created by odorjee on 3/29/2016.
  */
 public class AccessS3 {
     private static final String bucketName = "infor-devops-dev-retailcs";
-    private static final String key = "data.txt";
-    private static final String key2 = "owner-report.txt";
-    private static final String healthKey = "config.properties";
+//    private static final String folderName = "health-monitor-dashboard";
+    private static final String folder = "/lambda/";
+    private static final String key = "config.properties";
 
     public String s3reader() throws IOException {
         String endpoints = "";
-        AWSCredentials credentials = new BasicAWSCredentials(
-                "ASIAIVGXRMJYLXLKHZWA", "Sx3OjWi4ASHaR7e01LViYtWbA/ODmvcc8kLB0Ees");
-        // Ongda's Credentials
-
-//        AmazonS3 s3Client = new AmazonS3Client(credentials);
         AmazonS3 s3Client = new AmazonS3Client();
-        // easiest method for initialization
+        // EC2 initializes this by itself by checking IAM Role
         try {
-//            String newB = "newbucket";
-//            System.out.println("Creating a new bucket . . .");
-//            s3Client.createBucket(newB);
-
 //            S3Object s3object = s3Client.getObject(new GetObjectRequest(
 //                    bucketName, key2));
-            ObjectListing listing = s3Client.listObjects(bucketName);
-            List<S3ObjectSummary> list = listing.getObjectSummaries();
-            for (int i=0; i<list.size(); i++) {
-                System.out.println("object: " + list.get(i));
+//            ObjectListing listing = s3Client.listObjects(bucketName);
+            ObjectListing listing = s3Client.listObjects(new ListObjectsRequest().withBucketName(bucketName)
+                    .withPrefix(folder));
+
+            for (S3ObjectSummary object : listing.getObjectSummaries()){
+                System.out.println("Object: " + object.getKey());
             }
 
 //            System.out.println("Content-Type: "  +
