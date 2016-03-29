@@ -4,9 +4,7 @@ import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.ListObjectsRequest;
-import com.amazonaws.services.s3.model.ObjectListing;
-import com.amazonaws.services.s3.model.S3ObjectSummary;
+import com.amazonaws.services.s3.model.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,8 +16,7 @@ import java.io.InputStreamReader;
  */
 public class AccessS3 {
     private static final String bucketName = "infor-devops-dev-retailcs";
-//    private static final String folderName = "health-monitor-dashboard";
-    private static final String folder = "/lambda/";
+    private static final String folder = "health-monitor-dashboard/";
     private static final String key = "config.properties";
 
     public String s3reader() throws IOException {
@@ -31,12 +28,21 @@ public class AccessS3 {
 //                    bucketName, key2));
 //            ObjectListing listing = s3Client.listObjects(bucketName);
             ObjectListing listing = s3Client.listObjects(new ListObjectsRequest().withBucketName(bucketName)
-                    .withPrefix(folder));
-            System.out.println("Here");
+                    .withPrefix(folder)
+                    .withDelimiter("/"));
             for (S3ObjectSummary object : listing.getObjectSummaries()){
+                // will only print contents in folder: "health-monitor-dashboard"
                 System.out.println("Object: " + object.getKey());
-                System.out.println();     
+                System.out.println();
             }
+            S3Object s3Object = s3Client.getObject(new GetObjectRequest(bucketName, key));
+            InputStream objectData = s3Object.getObjectContent();
+            // Process the objectData stream.
+            System.out.println("Key: " + s3Object.getKey());
+            displayTextInputStream(objectData);
+            System.out.println();
+            objectData.close();
+
 
 //            System.out.println("Content-Type: "  +
 //                    s3object.getObjectMetadata().getContentType());
