@@ -4,7 +4,8 @@ import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.*;
+import com.amazonaws.services.s3.model.GetObjectRequest;
+import com.amazonaws.services.s3.model.S3Object;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,37 +17,20 @@ import java.io.InputStreamReader;
  */
 public class AccessS3 {
     private static final String bucketName = "infor-devops-dev-retailcs";
-    private static final String folder = "health-monitor-dashboard/";
-    private static final String key = "config.properties";
+    private static final String key = "health-monitor-dashboard/config.properties";
 
     public String s3reader() throws IOException {
-        String endpoints = "";
+        String endpoints = null;
         AmazonS3 s3Client = new AmazonS3Client();
         // EC2 initializes this by itself by checking IAM Role
         try {
-//            S3Object s3object = s3Client.getObject(new GetObjectRequest(
-//                    bucketName, key2));
-//            ObjectListing listing = s3Client.listObjects(bucketName);
-            ObjectListing listing = s3Client.listObjects(new ListObjectsRequest().withBucketName(bucketName)
-                    .withPrefix(folder)
-                    .withDelimiter("/"));
-            for (S3ObjectSummary object : listing.getObjectSummaries()){
-                // will only print contents in folder: "health-monitor-dashboard"
-                System.out.println("Object: " + object.getKey());
-                System.out.println();
-            }
-            S3Object s3Object = s3Client.getObject(new GetObjectRequest(bucketName, key));
+
+            S3Object s3Object = s3Client.getObject(new GetObjectRequest(bucketName, key)
+                    .withMatchingETagConstraint("d358ebaecd0f00c3909decc765cdc04e"));
+
             InputStream objectData = s3Object.getObjectContent();
-            // Process the objectData stream.
-            System.out.println("Key: " + s3Object.getKey());
-            displayTextInputStream(objectData);
+            endpoints = convertToString(objectData);
             System.out.println();
-            objectData.close();
-
-
-//            System.out.println("Content-Type: "  +
-//                    s3object.getObjectMetadata().getContentType());
-//            endpoints = displayTextInputStream(s3object.getObjectContent());
 
         } catch (AmazonServiceException ase) {
             System.out.println("Caught an AmazonServiceException, which" +
@@ -69,21 +53,16 @@ public class AccessS3 {
         return endpoints;
 
     }
-    private static String displayTextInputStream(InputStream input)
-            throws IOException {
-        // Read one text line at a time and display.
-        System.out.println("Printing contents of file . . .");
-        BufferedReader reader = new BufferedReader(new
-                InputStreamReader(input));
-        String endpoints = "";
-        while (true) {
-            String line = reader.readLine();
-            if (line == null)
-                break;
-            System.out.println("    " + line);
-            endpoints = endpoints + line;
+    private static String convertToString(InputStream input) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        BufferedReader br = new BufferedReader(new InputStreamReader(input));
+        String read;
+
+        while((read = br.readLine()) != null) {
+            sb.append(read);
         }
-        System.out.println();
-        return endpoints;
+
+        br.close();
+        return sb.toString();
     }
 }
