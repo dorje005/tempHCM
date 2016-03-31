@@ -6,6 +6,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
+import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,6 +16,7 @@ import java.io.InputStreamReader;
 /**
  * Created by odorjee on 3/29/2016.
  */
+@Component
 public class AccessS3 {
     private static final String bucketName = "infor-devops-dev-retailcs";
     private static final String key = "health-monitor-dashboard/config.properties";
@@ -25,9 +27,7 @@ public class AccessS3 {
         // EC2 initializes this by itself by checking IAM Role
         try {
 
-            S3Object s3Object = s3Client.getObject(new GetObjectRequest(bucketName, key)
-                    .withMatchingETagConstraint("d358ebaecd0f00c3909decc765cdc04e"));
-
+            S3Object s3Object = s3Client.getObject(new GetObjectRequest(bucketName, key));
             InputStream objectData = s3Object.getObjectContent();
             endpoints = convertToString(objectData);
             System.out.println();
