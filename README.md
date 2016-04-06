@@ -11,14 +11,14 @@ Notes about the application:
 Step-by-step guide
 
 Follow the steps listed below:
-1. Locate the config.properties file stored in the Amazon S3 bucket infor-devops-dev-retailcs under the health-monitor-dashboard folder 
-2. Download the file and add the desired endpoint(s) by entering the name of the service followed by "=" sign, followed by the respective 3. URL then (space) and lastly a ";" sign. Follow the examples below for clarification: 
+* Locate the config.properties file stored in the Amazon S3 bucket infor-devops-dev-retailcs under the health-monitor-dashboard folder 
+* Download the file and add the desired endpoint(s) by entering the name of the service followed by "=" sign, followed by the respective URL then (space) and lastly a ";" sign. Follow the examples below for clarification: 
     Acceptable -> Dev Example=https://example.com ;
     Unacceptable -> Dev Example =https://example.com ; 
     Unacceptable -> Dev Example= https://example.com ;
     Unacceptable -> Dev Example=https://example.com      ;
-4. After adding all endpoint(s) save the file as config.properties and store it back in the health-monitor-dashboard folder, replacing the older version of the file.
-5. Exit the current application by going inside the retailcs-health-164 instance and running it again using the mvn spring-boot:run command 
+* After adding all endpoint(s) save the file as config.properties and store it back in the health-monitor-dashboard folder, replacing the older version of the file.
+* Exit the current application by going inside the retailcs-health-164 instance and running it again using the mvn spring-boot:run command 
  
 Contact Information:
 For questions and/or concerns pertaining to the Infor Service Health Dashboard please contact Ongda Dorjee, email: dorje005@umn.edu . 
