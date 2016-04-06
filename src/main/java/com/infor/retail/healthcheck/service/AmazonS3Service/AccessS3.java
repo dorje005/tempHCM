@@ -16,6 +16,7 @@ import java.io.InputStreamReader;
 /**
  * Created by odorjee on 3/29/2016.
  */
+
 @Component
 public class AccessS3 {
     private static final String bucketName = "infor-devops-dev-retailcs";
