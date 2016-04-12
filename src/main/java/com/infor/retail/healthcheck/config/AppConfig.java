@@ -19,6 +19,12 @@ public class AppConfig {
         ArrayList<Service> health_services = new ArrayList<>();
         HealthMonitorService hms = new HealthMonitorService();
 
+        // testing
+//        health_services.add(new Service("Test API Authorization", 200, "PostGreSQL"));
+//        health_services.add(new Service("Test BPI Authorization", 200, "PostGreSQL"));
+//        health_services.add(new Service("Test CPI Authorization", 200, "PostGreSQL"));
+
+
 //      read endpoints from config file stored in Amazon S3
         AccessS3 accessS3 = new AccessS3();
         String endpoints = accessS3.s3reader();
