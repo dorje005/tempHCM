@@ -7,9 +7,11 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
+import com.infor.retail.healthcheck.model.Service;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
+import java.util.ArrayList;
 
 /**
  * Created by odorjee on 3/29/2016.
@@ -22,6 +24,7 @@ public class AccessS3 {
     private static final String key2 = "health-monitor-dashboard/service_log.txt";
 
     public String s3reader() throws IOException {
+        // reads services and corresponding URLs to test
         String endpoints = null;
         AmazonS3 s3Client = new AmazonS3Client();
         // EC2 initializes this by itself by checking IAM Role
@@ -96,6 +99,49 @@ public class AccessS3 {
             System.out.println("Error Message: " + ace.getMessage());
         }
         return endpoints;
+    }
+
+    public void append(ArrayList<Service> services) throws IOException {
+        // create new log file with previous log history and store in S3
+        // Note: In Amazon S3, not able to edit a preexisting file
+        // can only remove and upload
+
+        String oldLog = logReader();
+        String todaysLog = "";
+        for (int i=0; i<services.size(); i++) {
+            todaysLog = todaysLog + "\n" + services.get(i).getServiceName()
+                    + "-" + services.get(i).getResponseCode()
+                    + "-" + services.get(i).getCheckDate();
+        }
+        String updatedLog = todaysLog + oldLog;
+
+        // remove last day of the history
+        String[] parser = updatedLog.split("\n\n");
+        if (parser.length >= 8) {
+            String remove = parser[parser.length - 1];
+            int index = updatedLog.indexOf(remove);
+            StringBuilder sb = new StringBuilder(updatedLog);
+            sb.delete(index, updatedLog.length());
+            updatedLog = sb.toString();
+        }
+        // upload file to S3
+        try {
+            // S3 overrides files with same name
+            File file = new File("service_log.txt");
+            if(!file.exists()){
+                file.createNewFile();
+            }
+            FileWriter fileWriter = new FileWriter(file.getName(),true);
+            BufferedWriter bufferWriter = new BufferedWriter(fileWriter);
+            bufferWriter.write(updatedLog); // put new data into log File
+            bufferWriter.close();
+            if (updateLog(file)) {
+                file.delete();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean updateLog(File updatedFile) {

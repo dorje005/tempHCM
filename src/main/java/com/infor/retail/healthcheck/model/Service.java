@@ -8,18 +8,27 @@ public class Service {
     private int responseCode;
     private String serviceName;
     private String subService;
+    private String checkDate;
 
-    public Service(String name, int code) {
-        this.serviceName = name;
-        this.responseCode = code;
+    public Service(String serviceName, int responseCode) {
+        this.serviceName = serviceName;
+        this.responseCode = responseCode;
         this.subService = null;
     }
 
-    public Service(String name, int code, String name2) {
-        this.serviceName = name;
-        this.responseCode = code;
-        this.subService = name2;
+    public Service(String serviceName, int responseCode, String subService, String checkDate) {
+        this.serviceName = serviceName;
+        this.responseCode = responseCode;
+        this.subService = subService;
+        this.subService = checkDate;
     }
+
+    public Service(String serviceName, String checkDate, int responseCode) {
+        this.serviceName = serviceName;
+        this.responseCode = responseCode;
+        this.checkDate = checkDate;
+    }
+
 
     public int getResponseCode() {
         return this.responseCode;
@@ -33,16 +42,19 @@ public class Service {
         return this.subService;
     }
 
-    public void setResponseCode(int code) {
-        this.responseCode = code;
+    public String getCheckDate() { return this.checkDate;}
+
+    public void setResponseCode(int responseCode) {
+        this.responseCode = responseCode;
     }
 
-    public void setServiceName(String name) {
-        this.serviceName = name;
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
     }
 
-    public void setSubService(String name2) {
-        this.serviceName = name2;
+    public void setSubService(String subService) {
+        this.serviceName = subService;
     }
 
+    public void setCheckDate(String checkDate) { this.checkDate = checkDate; }
 }

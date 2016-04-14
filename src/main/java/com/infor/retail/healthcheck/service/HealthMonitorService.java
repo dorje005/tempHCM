@@ -17,6 +17,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Queue;
 
 @Component
 public class HealthMonitorService {
@@ -127,7 +128,7 @@ public class HealthMonitorService {
     }
 
     // get ArrayList containing services from AppConfig
-    @Autowired
+    /* @Autowired
     ArrayList<Service> health_services;
 
     public ArrayList<Service> getHealth_services() {
@@ -137,5 +138,12 @@ public class HealthMonitorService {
     public void setHealth_services(ArrayList<Service> health_services) {
         this.health_services = health_services;
     }
+    */
 
+    @Autowired
+    Queue<ArrayList<Service>> serviceQueue;
+
+    public Queue<ArrayList<Service>> getServiceQueue() { return serviceQueue; }
+
+    public void setServiceQueue(Queue<ArrayList<Service>> serviceQueue) { this.serviceQueue = serviceQueue; }
 }
