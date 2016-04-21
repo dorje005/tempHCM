@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Queue;
+import javax.annotation.Resource;
 
 @Component
 public class HealthMonitorService {
@@ -128,7 +129,7 @@ public class HealthMonitorService {
     }
 
     // get ArrayList containing services from AppConfig
-    /* @Autowired
+    /*@Autowired
     ArrayList<Service> health_services;
 
     public ArrayList<Service> getHealth_services() {
@@ -140,7 +141,7 @@ public class HealthMonitorService {
     }
     */
 
-    @Autowired
+    @Resource(name="serviceList")
     Queue<ArrayList<Service>> serviceQueue;
 
     public Queue<ArrayList<Service>> getServiceQueue() { return serviceQueue; }

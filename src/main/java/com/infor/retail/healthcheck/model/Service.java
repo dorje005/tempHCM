@@ -20,7 +20,7 @@ public class Service {
         this.serviceName = serviceName;
         this.responseCode = responseCode;
         this.subService = subService;
-        this.subService = checkDate;
+        this.checkDate = checkDate;
     }
 
     public Service(String serviceName, String checkDate, int responseCode) {
@@ -42,7 +42,7 @@ public class Service {
         return this.subService;
     }
 
-    public String getCheckDate() { return this.checkDate;}
+    public String getCheckDate() { return this.checkDate; }
 
     public void setResponseCode(int responseCode) {
         this.responseCode = responseCode;

@@ -25,14 +25,13 @@ public class HealthMonitorController {
 
     public HealthMonitorController() {}
 
-//    @Scheduled(cron="0 0 9 * * * ") // run at 9am every day
-    @Scheduled(fixedRate = 60000) // 60 seconds
+    @Scheduled(cron="0 0 9 * * * ") // run at 9am every day
     public void doSomeTask() throws IOException {
 
-        AccessS3 accessS3 = new AccessS3();
         // append latest results to history
+        AccessS3 accessS3 = new AccessS3();
         accessS3.append(hms.getServiceQueue().peek());
-
+	
     }
 
     @RequestMapping("/infor-health-service-dashboard")
@@ -40,7 +39,13 @@ public class HealthMonitorController {
         Queue<ArrayList<Service>> serviceQueue = hms.getServiceQueue();
         ArrayList<Service> healthChecks = serviceQueue.peek(); // returns most recent item added in the queue
         String date = hms.getTodaysDate();
-
+	
+	for (ArrayList<Service> obj : serviceQueue) {
+	    for (Service svc : obj) {
+                System.out.println("Service: " + svc.getServiceName() + " Date: " + svc.getCheckDate()); 
+	    }     
+	}
+		
         model.addAttribute("serviceLog", serviceQueue);
         model.addAttribute("services", healthChecks);
         model.addAttribute("dateTime", date);

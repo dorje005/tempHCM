@@ -109,16 +109,16 @@ public class AccessS3 {
         String oldLog = logReader();
         String todaysLog = "";
         for (int i=0; i<services.size(); i++) {
-            todaysLog = todaysLog + "\n" + services.get(i).getServiceName()
+            todaysLog = todaysLog  + services.get(i).getServiceName()
                     + "-" + services.get(i).getResponseCode()
-                    + "-" + services.get(i).getCheckDate();
+                    + "-" + services.get(i).getCheckDate() 
+	 	    + ";";
         }
-        String updatedLog = todaysLog + oldLog;
-
+        String updatedLog = todaysLog + "=" + oldLog;
         // remove last day of the history
-        String[] parser = updatedLog.split("\n\n");
-        if (parser.length >= 8) {
-            String remove = parser[parser.length - 1];
+        String[] parser = updatedLog.split("=");
+        if (parser.length >= 7) {
+	    String remove = parser[parser.length - 1];
             int index = updatedLog.indexOf(remove);
             StringBuilder sb = new StringBuilder(updatedLog);
             sb.delete(index, updatedLog.length());
