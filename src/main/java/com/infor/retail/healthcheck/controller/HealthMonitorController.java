@@ -40,12 +40,13 @@ public class HealthMonitorController {
         ArrayList<Service> healthChecks = serviceQueue.peek(); // returns most recent item added in the queue
         String date = hms.getTodaysDate();
 
-	    for (ArrayList<Service> obj : serviceQueue) {
+	    /*for (ArrayList<Service> obj : serviceQueue) {
 	        for (Service svc : obj) {
                 System.out.println("Service: " + svc.getServiceName() + " Date: " + svc.getCheckDate()); 
 	        }
-	    }
-		
+	    }*/
+	System.out.println("Size of Queue: " + serviceQueue.size()); 
+	System.out.println("Size of 1st ArrayList: " + healthChecks.size()); 	
         model.addAttribute("serviceLog", serviceQueue);
         model.addAttribute("services", healthChecks);
         model.addAttribute("dateTime", date);

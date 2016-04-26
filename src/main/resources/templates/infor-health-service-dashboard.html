@@ -46,60 +46,75 @@
     </tr>
 </table>
 
-<table class="table table-bordered">
-    <tr align="center" th:each="serviceList : ${serviceLog}">
-        <td align="center" th:value="${serviceList.get(0).getCheckDate()}"></td>
+<table class="table table-bordered" id="t">
+    <tr align="center" class="thead">
+        <td align="center"></td>
+	<td align="center" th:each="serviceList : ${serviceLog}" th:value="${serviceList.get(0).getCheckDate()}" th:text="${serviceList.get(0).getCheckDate()}"></td>
     </tr>
 
-    <tr align="center" th:each="serviceList: ${serviceLog}">
-        <div th:if="${serviceList.get(0).getResponseCode() == 200}">
+    <tr align="center">	
+	<td align="center" th:value="${services.get(0).getServiceName()}" th:text="${services.get(0).getServiceName()}"></td>
+        <div th:each="serviceList: ${serviceLog}" th:if="${serviceList.get(0).getResponseCode() == 200}">
             <td align="center"><img th:src="@{/images/check.gif}"/></td></div>
-        <div th:if="${serviceList.get(0).getResponseCode() != 200}">
+        <div th:each="serviceList: ${serviceLog}" th:if="${serviceList.get(0).getResponseCode() != 200}">
             <td align="center"><img th:src="@{/images/x.png}"/></td></div>
     </tr>
 
-    <tr align="center" th:each="serviceList: ${serviceLog}">
-        <div th:if="${serviceList.get(1).getResponseCode() == 200}">
+    <tr align="center">	
+	<td align="center" th:value="${services.get(1).getServiceName()}" th:text="${services.get(1).getServiceName()}"></td>
+        <div th:each="serviceList: ${serviceLog}" th:if="${serviceList.get(1).getResponseCode() == 200}">
             <td align="center"><img th:src="@{/images/check.gif}"/></td></div>
-        <div th:if="${serviceList.get(1).getResponseCode() != 200}">
+        <div th:each="serviceList: ${serviceLog}" th:if="${serviceList.get(1).getResponseCode() != 200}">
             <td align="center"><img th:src="@{/images/x.png}"/></td></div>
     </tr>
 
-    <tr align="center" th:each="serviceList: ${serviceLog}">
-        <div th:if="${serviceList.get(2).getResponseCode() == 200}">
+   <tr align="center">	
+	<td align="center" th:value="${services.get(2).getServiceName()}" th:text="${services.get(2).getServiceName()}"></td>
+        <div th:each="serviceList: ${serviceLog}" th:if="${serviceList.get(2).getResponseCode() == 200}">
             <td align="center"><img th:src="@{/images/check.gif}"/></td></div>
-        <div th:if="${serviceList.get(2).getResponseCode() != 200}">
+        <div th:each="serviceList: ${serviceLog}" th:if="${serviceList.get(2).getResponseCode() != 200}">
             <td align="center"><img th:src="@{/images/x.png}"/></td></div>
     </tr>
 
-    <tr align="center" th:each="serviceList: ${serviceLog}">
-        <div th:if="${serviceList.get(3).getResponseCode() == 200}">
+    <tr align="center">	
+	<td align="center" th:value="${services.get(3).getServiceName()}" th:text="${services.get(3).getServiceName()}"></td>
+	<div th:each="serviceList: ${serviceLog}" th:if="${serviceList.get(3).getResponseCode() == 200}">
             <td align="center"><img th:src="@{/images/check.gif}"/></td></div>
-        <div th:if="${serviceList.get(3).getResponseCode() != 200}">
+        <div th:each="serviceList: ${serviceLog}" th:if="${serviceList.get(3).getResponseCode() != 200}">
             <td align="center"><img th:src="@{/images/x.png}"/></td></div>
     </tr>
 
-    <tr align="center" th:each="serviceList: ${serviceLog}">
-        <div th:if="${serviceList.get(4).getResponseCode() == 200}">
+    <tr align="center">	
+	<td align="center" th:value="${services.get(4).getServiceName()}" th:text="${services.get(4).getServiceName()}"></td>
+        <div th:each="serviceList: ${serviceLog}" th:if="${serviceList.get(4).getResponseCode() == 200}">
             <td align="center"><img th:src="@{/images/check.gif}"/></td></div>
-        <div th:if="${serviceList.get(4).getResponseCode() != 200}">
+        <div th:each="serviceList: ${serviceLog}" th:if="${serviceList.get(4).getResponseCode() != 200}">
             <td align="center"><img th:src="@{/images/x.png}"/></td></div>
     </tr>
 
-    <tr align="center" th:each="serviceList: ${serviceLog}">
-        <div th:if="${serviceList.get(5).getResponseCode() == 200}">
+    <tr align="center">	
+	<td align="center" th:value="${services.get(5).getServiceName()}" th:text="${services.get(5).getServiceName()}"></td>
+        <div th:each="serviceList: ${serviceLog}" th:if="${serviceList.get(5).getResponseCode() == 200}">
             <td align="center"><img th:src="@{/images/check.gif}"/></td></div>
-        <div th:if="${serviceList.get(5).getResponseCode() != 200}">
+        <div th:each="serviceList: ${serviceLog}" th:if="${serviceList.get(5).getResponseCode() != 200}">
             <td align="center"><img th:src="@{/images/x.png}"/></td></div>
     </tr>
 
-    <tr align="center" th:each="serviceList: ${serviceLog}">
-        <div th:if="${serviceList.get(6).getResponseCode() == 200}">
+    <tr align="center">	
+	<td align="center" th:value="${services.get(6).getServiceName()}" th:text="${services.get(6).getServiceName()}"></td>
+        <div th:each="serviceList: ${serviceLog}" th:if="${serviceList.get(6).getResponseCode() == 200}">
             <td align="center"><img th:src="@{/images/check.gif}"/></td></div>
-        <div th:if="${serviceList.get(6).getResponseCode() != 200}">
+        <div th:each="serviceList: ${serviceLog}" th:if="${serviceList.get(6).getResponseCode() != 200}">
             <td align="center"><img th:src="@{/images/x.png}"/></td></div>
     </tr>
 
+    <tr align="center">	
+	<td align="center" th:value="${services.get(7).getServiceName()}" th:text="${services.get(7).getServiceName()}"></td>
+        <div th:each="serviceList: ${serviceLog}" th:if="${serviceList.get(7).getResponseCode() == 200}">
+            <td align="center"><img th:src="@{/images/check.gif}"/></td></div>
+        <div th:each="serviceList: ${serviceLog}" th:if="${serviceList.get(7).getResponseCode() != 200}">
+            <td align="center"><img th:src="@{/images/x.png}"/></td></div>
+    </tr> 
 </table>
 <div class="ft">
     <img th:src="@{/images/slogan.png}"/>
